@@ -23,6 +23,7 @@ border-radius: 8px; cursor: pointer; }
 .equals { background: #509bed; color: white;
 grid-column: span 4; }
 #status { font-size: 13px; }
+
 </style>
 </head>
 <body>
@@ -58,46 +59,48 @@ let operation = 0;
 let newNumber = true;
 const screen = document.getElementById('screen');
 var Module = {
-  onRuntimeInitialized: function () {
-    ready = true;
-    document.getElementById('status').textContent = 'C++ engine ready!';
-  }
+onRuntimeInitialized: function () {
+ready = true;
+document.getElementById('status').textContent =
+'C++ engine ready!';
+}
 };
 function digit(value) {
-  if (newNumber) {
-    screen.textContent = '0';
-    newNumber = false;
-  }
-  if (value === '.' && screen.textContent.includes('.')) return;
-  if (screen.textContent === '0' && value !== '.') {
-    screen.textContent = value;
-  } else {
-    screen.textContent += value;
-  }
+if (newNumber) {
+screen.textContent = '0';
+newNumber = false;
+}
+if (value === '.' && screen.textContent.includes('.')) return;
+if (screen.textContent === '0' && value !== '.') {
+screen.textContent = value;
+} else {
+screen.textContent += value;
+}
 }
 function choose(op) {
-  if (screen.textContent === 'Error') return;
-  firstNumber = Number(screen.textContent);
-  operation = op;
-  newNumber = true;
+if (screen.textContent === 'Error') return;
+firstNumber = Number(screen.textContent);
+operation = op;
+newNumber = true;
 }
 function equals() {
-  if (!ready) { alert('C++ is loading!'); return; }
-  if (operation === 0 || screen.textContent === 'Error') return;
-  const secondNumber = Number(screen.textContent);
-  const result = Module.ccall('calculate', 'number',
-    ['number', 'number', 'number'],
-    [firstNumber, secondNumber, operation]);
-  screen.textContent = Number.isFinite(result)
-    ? String(Number(result.toPrecision(12))) : 'Error';
-  operation = 0;
-  newNumber = true;
+if (!ready) { alert('C++ is loading!'); return; }
+if (operation === 0 || screen.textContent === 'Error') return;
+const secondNumber = Number(screen.textContent);
+const result = Module.ccall('calculate', 'number',
+['number', 'number', 'number'],
+[firstNumber, secondNumber, operation]);
+screen.textContent = Number.isFinite(result)
+? String(Number(result.toPrecision(12))) : 'Error';
+operation = 0;
+newNumber = true;
 }
 function clearAll() {
-  screen.textContent = '0';
-  firstNumber = 0;
-  operation = 0;
-  newNumber = true;
+screen.textContent = '0';
+
+firstNumber = 0;
+operation = 0;
+newNumber = true;
 }
 </script>
 <script src="calculator.js"></script>
